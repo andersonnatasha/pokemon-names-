@@ -17,7 +17,7 @@ function App () {
         axios.get(currentPageUrl).then(res => {
             cancelToken: new axios.CancelToken(c => cancel = c)
             setLoading(false)
-            setNextPageUrl(res.data.next)
+            setNextPageUrl(res.data .next)
             setPreviousCurrentPageUrl(res.data.previous)
             setPokemon(res.data.results.map(p => p.name))
             })
@@ -38,8 +38,9 @@ function App () {
         < React.Fragment>
             <PokemonList pokemon={pokemon} />
             <Pagination
-                goToNextPage={goToNextPage}
-                goToPreviousPage={goToPreviousPage}
+            // if next page url is true then pass the go to next page function otherwise pass null
+                goToNextPage={nextPageUrl ? goToNextPage : null}
+                goToPreviousPage={previousPageUrl ? goToPreviousPage: null}
             />
         </React.Fragment>
     );
