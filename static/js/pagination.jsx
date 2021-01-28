@@ -1,7 +1,10 @@
 "use strict";
 
-function Pagination () {
+function Pagination ({goToNextPage, goToPreviousPage}) {
     return (
-        null
+        <div>
+            <button onClick={goToPreviousPage}>Previous</button>
+            <button onClick={goToNextPage}>Next</button>
+        </div>
     );
 }

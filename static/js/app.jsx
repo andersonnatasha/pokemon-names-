@@ -12,21 +12,36 @@ function App () {
     React.useEffect(() => {
         //Show loading message
         setLoading(true)
+        let cancel
         // makes a fetch and returns a promise
         axios.get(currentPageUrl).then(res => {
+            cancelToken: new axios.CancelToken(c => cancel = c)
             setLoading(false)
-            setNextPageUrl(res.data.results.next)
-            setPreviousCurrentPageUrl(res.data.results.previous)
+            setNextPageUrl(res.data.next)
+            setPreviousCurrentPageUrl(res.data.previous)
             setPokemon(res.data.results.map(p => p.name))
             })
+            // useEffect returned function to cancel previous call when new one made, incase old request finishes after new request
+            return () => cancel()
     }, [currentPageUrl])
+
+    function goToNextPage () {
+        setCurrentPageUrl(nextPageUrl)
+    }
+    function goToPreviousPage () {
+        setCurrentPageUrl(previousPageUrl)
+    }
 
     if (loading) return "Loading..."
 
-
     return (
-        <PokemonList pokemon={pokemon} />
-
+        < React.Fragment>
+            <PokemonList pokemon={pokemon} />
+            <Pagination
+                goToNextPage={goToNextPage}
+                goToPreviousPage={goToPreviousPage}
+            />
+        </React.Fragment>
     );
 }
 
